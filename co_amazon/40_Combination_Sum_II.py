@@ -14,8 +14,8 @@ Note:
 
 All numbers (including target) will be positive integers.
 The solution set must not contain duplicate combinations.
-Example 1:
 
+Example 1:
 Input: candidates = [10,1,2,7,6,1,5], target = 8,
 A solution set is:
 [
@@ -24,8 +24,8 @@ A solution set is:
   [2, 6],
   [1, 1, 6]
 ]
-Example 2:
 
+Example 2:
 Input: candidates = [2,5,2,1,2], target = 5,
 A solution set is:
 [
@@ -43,27 +43,28 @@ class Solution(object):
         :rtype: List[List[int]]
         """
         result = []
-        candidates.sort()
+        cc = candidates
+        cc.sort()
 
-        def dfs(cand, sol, target):
-
-            if target == 0:
-                result.append(sol[:])
+        def dfs(idx, cresult, residule):
+            if residule == 0:
+                result.append(cresult[:])
                 return
 
-            for i in range(len(cand)):
-                if cand[i] > target:
+            for i in range(idx, len(cc)):
+                if cc[i] > residule:
                     break
-                if i and cand[i] == cand[i - 1]:
+
+                if i > idx and cc[i] == cc[i-1]:
                     continue
 
-                sol.append(cand[i])
-                dfs(cand[i + 1:], sol, target - cand[i])
-                sol.pop()
+                cresult.append(cc[i])
+                dfs(i + 1, cresult, residule - cc[i])
+                cresult.pop()
 
-
-        dfs(candidates, [], target)
+        dfs(0, [], target)
         return result
+
 
 def build():
     # 1, 1, 2, 5, 6, 7, 10

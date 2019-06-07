@@ -42,49 +42,56 @@ class Solution(object):
         :type l2: ListNode
         :rtype: ListNode
         """
-        carry = 0
-        ret_head = head = ListNode(float("-inf"))
+        carryon = 0
+
+        ret = now = ListNode(float("-inf"))
 
         while l1 and l2:
-            summ = l1.val + l2.val + carry
+            s = l1.val + l2.val + carryon
+            carryon = 0
+
+            if s >= 10:
+                carryon = 1
+                s = s % 10
+
+            cur = ListNode(s)
+            now.next = cur
+            now = cur
+
             l1 = l1.next
             l2 = l2.next
-            digit = summ % 10
-            carry = summ / 10
-            current_node = ListNode(digit)
-            head.next = current_node
-            head = current_node
 
-        while l1:
-            summ = l1.val + carry
-            l1 = l1.next
-            digit = summ % 10
-            carry = summ / 10
-            current_node = ListNode(digit)
-            head.next = current_node
-            head = current_node
+        final = l1 if l1 else l2 if l2 else None
 
-        while l2:
-            summ = l2.val + carry
-            l2 = l2.next
-            digit = summ % 10
-            carry = summ / 10
-            current_node = ListNode(digit)
-            head.next = current_node
-            head = current_node
+        while final:
+            s = final.val + carryon
+            carryon = 0
 
-        if carry:
-            current_node = ListNode(carry)
-            head.next = current_node
-            head = current_node
+            if s >= 10:
+                carryon = 1
+                s = s % 10
 
-        return ret_head.next
+            cur = ListNode(s)
+            now.next = cur
+            now = cur
+
+            final = final.next
+
+        if carryon:
+            cur = ListNode(carryon)
+            now.next = cur
+
+        return ret.next
 
 
 def build():
     """
     (7 -> 2 -> 4 -> 3) + (5 -> 6 -> 4)
     """
+    l1 = ListNode(5)
+    r1 = ListNode(5)
+
+    return l1, r1
 
     n7 = ListNode(7)
     n2 = ListNode(2)
@@ -106,8 +113,6 @@ def build():
 
 if __name__ == "__main__":
     l1, l2 = build()
-
     s = Solution()
     result = s.addTwoNumbers(l1, l2)
-
     pp(result)

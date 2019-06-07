@@ -31,100 +31,6 @@ class Solution(object):
         :type board: List[List[str]]
         :type word: str
         :rtype: bool
-        """
-        from __builtin__ import xrange
-
-        def dfs(ri, ci, word, count, board):
-            if count == len(word):
-                return True
-
-            if len(board) - 1 < ri or ri < 0 or len(board[0]) - 1 < ci or \
-                    ci < 0:
-                return False
-
-            if board[ri][ci] == word[count]:
-
-                # act as visited.
-                board[ri][ci] = None
-
-                result = dfs(ri, ci + 1, word, count + 1, board) or \
-                    dfs(ri, ci - 1, word, count + 1, board) or \
-                    dfs(ri + 1, ci, word, count + 1, board) or \
-                    dfs(ri - 1, ci, word, count + 1, board)
-
-                board[ri][ci] = word[count]
-
-                return result
-
-            return False
-
-        # go though each board node.
-        for ri in xrange(len(board)):
-            for ci in xrange(len(board[0])):
-                if dfs(ri, ci, word, 0, board):
-                    return True
-        return False
-
-    def rewrite(self, board, word):
-        """
-        :type board: List[List[str]]
-        :type word: str
-        :rtype: bool
-        Given board =
-        [
-          ['A','B','C','E'],
-          ['S','F','C','S'],
-          ['A','D','E','E']
-        ]
-
-        word = "ABCCED", -> returns true,
-        word = "SEE", -> returns true,
-        word = "ABCB", -> returns false.
-        """
-        from __builtin__ import xrange
-
-        ddir = ((1, 0), (-1, 0), (0, 1), (0, -1))
-
-        def dfs(i, j, idx, visited):
-            """
-            ret: bool, True, found, False, nothing.
-            """
-            if (i, j) in visited or \
-                    i < 0 or i >= len(board) or \
-                    j < 0 or j >= len(board[0]):
-                return False
-
-            if board[i][j] == word[idx]:
-                if idx == len(word) - 1:
-                    return True
-
-                visited.add((i, j))
-
-                for d in ddir:
-                    if dfs(i + d[0], j + d[1], idx + 1, visited):
-                        return True
-
-                visited.remove((i, j))
-
-            return False
-
-        for i in xrange(len(board)):
-            for j in xrange(len(board[0])):
-                # 每個點開始為獨立事件 故visited resets!
-                visited = set()  # save tuple location
-
-                if board[i][j] == word[0]:
-                    if dfs(i, j, 0, visited):
-                        return True
-
-        return False
-
-    def rewrite2(self, board, word):
-        """
-        :type board: List[List[str]]
-        :type word: str
-        :rtype: bool
-
         Given board =
         [
           ['A','B','C','E'],
@@ -135,12 +41,15 @@ class Solution(object):
         word = "SEE", -> returns true,
         word = "ABCB", -> returns false.
         """
+        if len(board) * len(board[0]) < len(word):
+            return False
+
         direct = ((0, 1), (0, -1), (1, 0), (-1, 0))
 
         def dfs(i, j, idx):
-            if i < 0 or i == len(board) or j < 0 or j == len(board[0]) \
-                or board[i][j] is None or idx == len(word) or \
-                board[i][j] != word[idx]:
+            if idx == len(word) or \
+                not 0 <= i < len(board) or not 0 <= j < len(board[0]) \
+                or board[i][j] is None or board[i][j] != word[idx]:
                 return False
 
             if idx == len(word) - 1:
@@ -182,5 +91,3 @@ def build():
 if __name__ == "__main__":
     s = Solution()
     print(s.exist(*build()))
-    print(s.rewrite(*build()))
-    print(s.rewrite2(*build()))

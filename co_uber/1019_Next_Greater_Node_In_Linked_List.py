@@ -51,6 +51,7 @@ class Solution(object):
         """
         :type head: ListNode
         :rtype: List[int]
+        存index!
         """
         res, stack = [], []
 

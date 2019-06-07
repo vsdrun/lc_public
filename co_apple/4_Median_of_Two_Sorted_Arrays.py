@@ -53,6 +53,7 @@ Then median = (max(left_part) + min(right_part))/2.
 To ensure these two conditions, we just need to ensure:
 (1) i + j == m - i + n - j (or: m - i + n - j + 1)
     if n >= m, we just need to set: i = 0 ~ m, j = (m + n + 1)/2 - i
+
 (2) B[j-1] <= A[i] and A[i-1] <= B[j]
 """
 
@@ -63,55 +64,17 @@ class Solution(object):
         :type nums1: List[int]
         :type nums2: List[int]
         :rtype: float
-        """
-        # small list, large list
-        a, b = sorted((nums1, nums2), key=len)
-        m, n = len(a), len(b)  # 小, 大
-
-        # 找出中間點, -1 因為index starts with 0.
-        # mid 為 list index.
-        mid = (m + n - 1) / 2
-
-        import bisect
-
-        class Range:
-
-            def __getitem__(self, i):
-                """
-                :ret bool:
-                           回傳的值與 '1' 比較 即
-                           回傳的值 < '1' 為真 or 否?
-                           否: 左半邊
-                           真: 右半邊
-                """
-
-                j = mid - i - 1
-
-                # False, 則回傳 0 , 則找右半邊.
-                result = j < 0 or a[i] >= b[j]
-
-                return result
-
-        i = bisect.bisect_left(Range(), 1, 0, m)
-
-        # 將a,b list 剩下的排序, 即右邊的排序
-        # 這裡 +2 只是擷取右邊小部份 list, 不需要全部
-        # 因為我們只要 排序後的([0]+[1])/2 得到midian
-
-        nextfew = sorted(a[i:i + 2] + b[mid - i:mid - i + 2])
-
-        return (nextfew[0] + nextfew[1 - (m + n) % 2]) / 2.0
-
-    def rewrite(self, A, B):
-        """
-        :type nums1: List[int]
-        :type nums2: List[int]
-        :rtype: float
+        A: m, x, m-x
+        B: n, y, n-y
+        A[x] < B[y+1]
+        B[y] < A[x+1]
         """
 
         m, n = len(A), len(B)
 
         if m > n:
+            # A 小 B 大.
+            # m 小 n 大.
             A, B, m, n = B, A, n, m
 
         if n == 0:
@@ -119,12 +82,14 @@ class Solution(object):
 
         imin, imax, half_len = 0, m, (m + n + 1) / 2
 
+        # here
         while imin <= imax:
             i = (imin + imax) / 2
             j = half_len - i
 
             if i < m and B[j - 1] > A[i]:
                 # i is too small, must increase it
+                # i 增加代表j減少.
                 imin = i + 1
             elif i > 0 and A[i - 1] > B[j]:
                 # i is too big, must decrease it
@@ -150,7 +115,6 @@ class Solution(object):
 
                 return (max_of_left + min_of_right) / 2.0
 
-
 def build():
     return [1, 2, 9], [3, 4, 5]
     return [4, 5], [1, 2, 3]
@@ -159,4 +123,3 @@ def build():
 if __name__ == "__main__":
     s = Solution()
     print(s.findMedianSortedArrays(*build()))
-    print(s.rewrite(*build()))

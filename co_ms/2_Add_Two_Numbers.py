@@ -42,51 +42,6 @@ class Solution(object):
         :type l2: ListNode
         :rtype: ListNode
         """
-        carry = 0
-        ret_head = head = ListNode(float("-inf"))
-
-        while l1 and l2:
-            summ = l1.val + l2.val + carry
-            l1 = l1.next
-            l2 = l2.next
-            digit = summ % 10
-            carry = summ / 10
-            current_node = ListNode(digit)
-            head.next = current_node
-            head = current_node
-
-        while l1:
-            summ = l1.val + carry
-            l1 = l1.next
-            digit = summ % 10
-            carry = summ / 10
-            current_node = ListNode(digit)
-            head.next = current_node
-            head = current_node
-
-        while l2:
-            summ = l2.val + carry
-            l2 = l2.next
-            digit = summ % 10
-            carry = summ / 10
-            current_node = ListNode(digit)
-            head.next = current_node
-            head = current_node
-
-        if carry:
-            current_node = ListNode(carry)
-            head.next = current_node
-            head = current_node
-
-        return ret_head.next
-
-    def rewrite(self, l1, l2):
-        """
-        :type l1: ListNode
-        :type l2: ListNode
-        :rtype: ListNode
-        """
-        # 並行?
         carryon = 0
 
         ret = now = ListNode(float("-inf"))
@@ -158,12 +113,6 @@ def build():
 
 if __name__ == "__main__":
     l1, l2 = build()
-
     s = Solution()
     result = s.addTwoNumbers(l1, l2)
-
-    pp(result)
-
-    result = s.rewrite(l1, l2)
-
     pp(result)

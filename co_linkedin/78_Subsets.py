@@ -31,6 +31,8 @@ class Solution(object):
         """
         :type nums: List[int]
         :rtype: List[List[int]]
+        using bitmap, slow
+        and operation: -i 保, -1 去
         """
         import math as m
 
@@ -53,41 +55,11 @@ class Solution(object):
 
         return result
 
-    def subsets_2(self, nums):
-        """
-        :type nums: List[int]
-        :rtype: List[List[int]]
-        Simple and Smart!
-        """
-        power_set = [[]]
-
-        for num in sorted(nums):
-            power_set += [item + [num] for item in power_set]
-
-        return power_set
-
-    def subsets_3(self, nums):
-        """
-        :type nums: List[int]
-        :rtype: List[List[int]]
-        """
-        power_set = [[]]
-
-        for num in nums:
-            tmp_r = [item + [num] for item in power_set]
-            print(tmp_r)
-            power_set += tmp_r
-            print(power_set)
-            print("\n")
-
-        return power_set
-
     def rewrite(self, nums):
         """
         :type nums: List[int]
         :rtype: List[List[int]]
         """
-
         result = [[]]
 
         for n in nums:
@@ -105,5 +77,5 @@ def build():
 
 if __name__ == "__main__":
     s = Solution()
-    print(s.subsets_3(build()))
+    print(s.subsets(build()))
     print(s.rewrite(build()))

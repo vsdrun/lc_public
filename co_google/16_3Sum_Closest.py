@@ -13,6 +13,8 @@ You may assume that each input would have exactly one solution.
 Example:
 Given array nums = [-1, 2, 1, -4], and target = 1.
 The sum that is closest to the target is 2. (-1 + 2 + 1 = 2).
+
+i + 2_sum question :-)
 """
 
 class Solution(object):
@@ -29,6 +31,8 @@ class Solution(object):
             # 前後夾擠
             j = i + 1
             k = len(nums) - 1
+
+            # i, i + 1, ..., len(nums) - 1
 
             while j < k:
                 csum = nums[i] + nums[j]  + nums[k]

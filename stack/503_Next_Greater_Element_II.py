@@ -41,12 +41,12 @@ e.g : 1 2 1 3 4 => into stack:
 1
 2
 1
-
 --------
 scan the list from left to right:
 if v > stack.pop() , pop the stack, why?
 because current v is larger, why keep the smaller one for later
 v' to compare?
+
 """
 
 
@@ -56,37 +56,6 @@ class Solution(object):
         :type nums: List[int]
         :rtype: List[int]
         """
-
-        stack = [n for n in nums[::-1]]
-        result = []
-
-        for n in nums[::-1]:  # 7 9 1 8
-
-            while stack and n >= stack[-1]:
-                stack.pop()
-
-            if stack and n < stack[-1]:
-                result += stack[-1],
-            else:
-                result += -1,
-            stack += n,
-
-        result = result[::-1]
-
-        return result
-
-    def rewrite(self, nums):
-        """
-        :type nums: List[int]
-        :rtype: List[int]
-        """
-        # stack top 存 最近的 large value.
-        # 一個for loop 解決data的問題為:
-        # 1. if stack top value 大於此for loop 的value
-        #   存其stack top 值, 並且push for loop value into stack top
-        # 2. if stack top value 小於 for loop value, pop stack
-        #   直到有值大於 for loop value, 將for loop value push 入
-        #   確保! stack 由上到下為 小到大!
         stack = nums[::-1]
         result = []
 
@@ -113,3 +82,4 @@ def build():
 if __name__ == "__main__":
     s = Solution()
     print(s.nextGreaterElements(build()))
+    print(s.rewrite(build()))

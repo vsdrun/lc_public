@@ -41,9 +41,12 @@ class Solution(object):
         :type matrix: List[List[int]]
         :type target: int
         :rtype: bool
+        convert matrix to a long sorted list then do a binary search.
         """
         import bisect as bi
+
         M = []
+
         for r in matrix:
             M.extend(r)
 
@@ -67,6 +70,7 @@ class Solution(object):
 
             if target > matrix[r][-1]:
                 continue
+            # binary search at row level
             if target in matrix[r]:
                 return True
             else:

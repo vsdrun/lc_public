@@ -44,90 +44,7 @@ class Solution(object):
 
         return left + [Interval(s, e)] + right
 
-    def insert_slow(self, intervals, newInterval):
-        """
-        :type intervals: List[Interval]
-        :type newInterval: Interval
-        :rtype: List[Interval]
-        """
-        # You may assume that the intervals were initially sorted according to
-        # their start times.
-        # 注意輸入只有一個的corner case.
-
-        if not intervals:
-            return [[newInterval.start, newInterval.end]]
-
-        result = []
-        current_l = newInterval.start
-        current_r = newInterval.end
-        added = False
-
-        for i in intervals:
-            if added:
-                result += [i.start, i.end],
-                continue
-
-            if current_l > i.end:
-                result += [i.start, i.end],
-                continue
-
-            if current_r < i.start:
-                if not added:
-                    result += [current_l, current_r],
-                    added = True
-                result += [i.start, i.end],
-                continue
-
-            if current_l >= i.start:
-                current_l = min(i.start, current_l)
-                current_r = max(i.end, current_r)
-                continue
-
-            if i.start > current_r:
-                if not added:
-                    result += [current_l, current_r],
-                    added = True
-                result += [i.start, i.end],
-                continue
-
-            if current_r >= i.start and current_r <= i.end:
-                current_r = max(i.end, newInterval.end)
-                result += [current_l, current_r],
-                added = True
-                continue
-
-        if not added:
-            result += [current_l, current_r],
-
-        return result
-
-    def rewrite(self, intervals, newInterval):
-        """
-        :type intervals: List[Interval]
-        :type newInterval: Interval
-        :rtype: List[Interval]
-        分段概念
-
-        left + xx + right
-        """
-
-        left, right = [], []
-
-        l, r = newInterval.start, newInterval.end
-
-        for i in intervals:
-            if l > i.end:
-                left += i,
-            elif r < i.start:
-                right += i,
-            else:
-                l = min(l, i.start)
-                r = max(r, i.end)
-
-        return left + [Interval(l, r)] + right
-
-
-def build_input():
+def build():
     input = [[1, 3], [6, 9]]
     result = []
 
@@ -145,8 +62,5 @@ def pp(ll):
     print(result)
 
 if __name__ == "__main__":
-    input = build_input()
-
     s = Solution()
-    pp(s.insert(input, Interval(2, 5)))
-    pp(s.rewrite(input, Interval(2, 5)))
+    pp(s.insert(build(), Interval(2, 5)))

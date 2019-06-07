@@ -41,9 +41,12 @@ class Solution(object):
         :type matrix: List[List[int]]
         :type target: int
         :rtype: bool
+        convert matrix to a long sorted list then do a binary search.
         """
         import bisect as bi
+
         M = []
+
         for r in matrix:
             M.extend(r)
 
@@ -54,7 +57,26 @@ class Solution(object):
 
         return False
 
+    def rewrite(self, matrix, target):
+        """
+        :type matrix: List[List[int]]
+        :type target: int
+        :rtype: bool
+        """
 
+        for r in range(len(matrix)):
+            if not matrix[r]:
+                return False
+
+            if target > matrix[r][-1]:
+                continue
+            # binary search at row level
+            if target in matrix[r]:
+                return True
+            else:
+                return False
+
+        return False
 
 def build():
     return [[1,   3,  5,  7],
@@ -65,3 +87,4 @@ def build():
 if __name__ == "__main__":
     s = Solution()
     print(s.searchMatrix(*build()))
+    print(s.rewrite(*build()))

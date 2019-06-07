@@ -12,7 +12,6 @@ candidate numbers sums to target.
 The same repeated number may be chosen from candidates unlimited number of times.
 
 Note:
-
 All numbers (including target) will be positive integers.
 The solution set must not contain duplicate combinations.
 
@@ -45,22 +44,22 @@ class Solution(object):
         """
         result = []
         candidates.sort()
+        cc = candidates
 
-        def backtrace(sol, cand, target):
+        def backtrace(sol, startIdx, target):
             if target == 0:
                 result.append(sol[:])
                 return
 
-            for i in range(len(cand)):
-                if target < cand[i]:
-                    continue
+            for i in range(startIdx, len(cc)):
+                if target < cc[startIdx]:
+                    break
 
-                sol.append(cand[i])
-                # 注意! cand[i:]
-                backtrace(sol, cand[i:], target - cand[i])
+                sol.append(cc[i])
+                backtrace(sol, i, target - cc[i])
                 sol.pop()
 
-        backtrace([], candidates, target)
+        backtrace([], 0, target)
 
         return result
 

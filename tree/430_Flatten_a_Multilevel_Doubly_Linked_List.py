@@ -36,72 +36,37 @@ class Solution(object):
         """
         :type head: Node
         :rtype: Node
-
-        Tree Problem:
-        right = next
-        left  = child
-        """
-        def run(node):
-            """
-            node: Node
-            :ret: Right Node of child for it to point to oright
-            """
-            prev = None
-            while node:
-                if node.child:
-                    oright = node.next  # could be None
-                    right = run(node.child)
-                    node.child.prev = node
-                    node.next = node.child
-                    node.child = None
-
-                    if not oright:
-                        return right
-
-                    right.next = oright
-                    oright.prev = right
-                    node = oright
-                else:
-                    prev = node
-                    node = node.next
-
-            return prev
-
-        run(head)
-        return head
-
-    def rewrite(self, head):
-        """
-        :type head: Node
-        :rtype: Node
         思考 每一個recursive call要做的是什麼
         """
-
-        def process(node):
+        def flatit(node):
+            """
+            :ret: last right node
+            """
             prev = None
+
             while node:
-                oright = node.next
+                origNext = node.next
+                # 重要~
+                prev = node
 
                 if node.child:
-                    newRightEnd = process(node.child)
                     node.next = node.child
                     node.child.prev = node
-                    node.child = None
-                    newRightEnd.next = oright
+                    lastNode = flatit(node.child)
+                    lastNode.next = origNext
 
-                    if oright:
-                        oright.prev = newRightEnd
-                    prev = newRightEnd
-                else:
-                    prev = node
+                    if origNext:
+                        origNext.prev = lastNode
+                    # 重要~
+                    prev = lastNode
 
-                node = oright
+                node.child = None
+                node = origNext
 
             return prev
 
-        process(head)
+        flatit(head)
         return head
-
 
 
 def build():
@@ -167,7 +132,7 @@ def pp(node):
 
     while node:
         if node.child:
-            print("shit")
+            print("node should have NO child.")
         result.append(node.val)
         prev = node
         node = node.next
@@ -183,7 +148,4 @@ def pp(node):
 if __name__ == "__main__":
     s = Solution()
     r = s.flatten(build())
-    pp(r)
-    print("---")
-    r = s.rewrite(build())
     pp(r)

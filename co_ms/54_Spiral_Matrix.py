@@ -39,85 +39,37 @@ class Solution(object):
         if not matrix:
             return []
 
+        direct = ((0, 1), (1, 0), (0, -1), (-1, 0))
         result = []
 
-        def pp(pos, direct):
-            """
-            :ret: last position, None means hit the end.
-            """
-            i, j = pos[0] + direct[0], pos[1] + direct[1]
+        def bfs(i, j):
+            root = [i, j]
+            d = 0
 
-            while 0 <= i < len(matrix) and 0 <= j < len(matrix[0]) and \
-                    matrix[i][j] is not None:
-                result.append(matrix[i][j])
-                matrix[i][j] = None
-                i += direct[0]
-                j += direct[1]
+            while len(result) < len(matrix) * len(matrix[0]):
 
-            return i - direct[0], j - direct[1]
+                while 0 <= root[0] < len(matrix) and \
+                    0 <= root[1] < len(matrix[0]) and \
+                    matrix[root[0]][root[1]] is not None:
 
-        ddir = [(0, 1), (-1, 0), (0, -1), (1, 0)]  # 右下左上
+                        result.append(matrix[root[0]][root[1]])
+                        matrix[root[0]][root[1]] = None
+                        root[0], root[1] = \
+                            root[0] + direct[d%4][0], root[1] + direct[d%4][1]
 
-        root = ddir[:]
-        last_pos = (0, -1)
+                root[0], root[1] = \
+                    root[0] - direct[d%4][0], root[1] - direct[d%4][1]
 
-        while root:
+                d += 1
 
-            while root:
-                d = root.pop(0)
-                last_pos = pp(last_pos, d)
+                root[0], root[1] = \
+                    root[0] + direct[d%4][0], root[1] + direct[d%4][1]
 
-                if len(result) == len(matrix) * len(matrix[0]):
-                    return result
-
-            root = ddir[:]
-
-    def rewrite(self, matrix):
-        """
-        :type matrix: List[List[int]]
-        :rtype: List[int]
-        """
-        if not matrix:
-            return []
-
-        ddir = ((0, 1), (1, 0), (0, -1), (-1, 0))
-
-        visited = [[False] * len(matrix[0]) for _ in range(len(matrix))]
-
-        cnt = 0
-        i = 0
-        j = -1
-
-        total = len(matrix) * len(matrix[0])
-
-        result = []
-
-        while cnt != total:
-            for d in ddir:
-                # 先 operation 再判斷.
-                i += d[0]
-                j += d[1]
-
-                while 0 <= i < len(matrix) and \
-                        0 <= j < len(matrix[0]) and \
-                        not visited[i][j]:
-
-                    result.append(matrix[i][j])
-
-                    visited[i][j] = True
-
-                    cnt += 1
-
-                    i += d[0]
-                    j += d[1]
-
-                i -= d[0]
-                j -= d[1]
-
+        bfs(0, 0)
         return result
 
-
 def build():
+    return []
     return [
         [1, 2, 3, 4],
         [5, 6, 7, 8],
@@ -133,4 +85,3 @@ def build():
 if __name__ == "__main__":
     s = Solution()
     print(s.spiralOrder(build()))
-    print(s.rewrite(build()))

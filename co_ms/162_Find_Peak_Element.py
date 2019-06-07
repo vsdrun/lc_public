@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-
 """
 https://leetcode.com/problems/find-peak-element/
 
@@ -12,6 +11,7 @@ Given an input array where num[i] ≠ num[i+1],
 find a peak element and return its index.
 
 The array may contain multiple peaks,
+** Thus it's easy...
 in that case return the index to any one of the peaks is fine.
 
 You may imagine that num[-1] = num[n] = -∞.
@@ -41,34 +41,17 @@ class Solution(object):
                 return i - 1
         return len(nums) - 1
 
-    def rewrite(self, nums):
-        """
-        :type nums: List[int]
-        :rtype: int
-        也可思考 log(n) solution!
-        """
-        from __builtin__ import xrange
 
-        peak = -1
-
-        for i in xrange(1, len(nums)):
-            if peak == -1 and nums[i] < nums[i - 1]:
-                peak = i - 1
-
-        return peak if peak != -1 else len(nums) - 1
-
-
-def build():
-    return [3, 2, 1]
-    return [2, 1]
-    return [1, 2, 3, 1]
+def build_input():
     return [1, 2]
     return [1]
+    return [1, 2, 3, 1]
 
 
 if __name__ == "__main__":
+    m = build_input()
+
     s = Solution()
-    result = s.findPeakElement(build())
-    print(result)
-    result = s.rewrite(build())
+    result = s.findPeakElement(m)
+
     print(result)
