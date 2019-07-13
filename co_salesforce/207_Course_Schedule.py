@@ -40,47 +40,66 @@ class Solution(object):
         :type prerequisites: List[List[int]]
         :rtype: bool
         """
-        from collections import defaultdict as dd
-        dmap = dd(list)
+        if numCourses and not prerequisites:
+            return True
+
+        if not numCourses:
+            return False
+
+        # build graph
+        dmap = dict()
+
+        courses = set(i for i in range(numCourses))
 
         for p in prerequisites:
+            if p[0] < 0 or p[1] < 0 or p[0] >= numCourses or p[1] >= numCourses:
+                return False
+
+            if not dmap.get(p[1]):
+                dmap[p[1]] = []
+
             dmap[p[1]].append(p[0])
 
-        def dfs(node):
-            if node in circle:
+        # if circle, can't finish courses.
+        # use visited to avoid duplicated visit.
+        visited = set()
+
+        def dfs(node, cir):
+            """
+            Use dfs to check circle.
+            """
+            if node in cir:
                 return False
 
             if node in visited:
                 return True
 
-
             visited.add(node)
-            circle.add(node)
+            cir.add(node)
 
-            for nc in dmap[node]:
-                if not dfs(nc):
+            for n in dmap.get(node, []):
+                if not dfs(n, cir):
                     return False
 
-            circle.remove(node)
+            cir.remove(node)
+
             return True
 
+        for n in courses:
+            if n in dmap:
+                cir = set()
 
-        visited = set()
-        circle = set()
-        for c in dmap.keys():
-            if not dfs(c):
-                return False
+                if not dfs(n, cir):
+                    return False
 
         return True
 
 
-
-
 def build():
-    return 5, [[1, 0], [2, 0], [3, 0], [3, 1]]
-    return 2, [[1, 0], [0, 1]]
-    return 8, [[1, 0], [2, 6], [1, 7], [6, 4], [7, 0], [0, 5]]
     return 5, [[1, 0], [2, 0], [3, 0], [3, 1], [0, 1]]
+    return 8, [[1, 0], [2, 6], [1, 7], [6, 4], [7, 0], [0, 5]]
+    return 2, [[1, 0], [0, 1]]
+    return 5, [[1, 0], [2, 0], [3, 0], [3, 1]]
     return 2, [[1, 0]]
 
 

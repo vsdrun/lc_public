@@ -9,6 +9,8 @@ Given a list accounts, each element accounts[i] is a list of strings,
 where the first element accounts[i][0] is a name,
 and the rest of the elements are emails representing emails of the account.
 
+a[0]=name
+a[...]=emails
 
 Now, we would like to merge these accounts.
 Two accounts definitely belong to the same person if there is some
@@ -68,128 +70,60 @@ class Solution(object):
         """
         :type accounts: List[List[str]]
         :rtype: List[List[str]]
-        """
-        import collections as cc
+        my best solution.
 
-        mapping = cc.defaultdict(set)
-
-        vistied = set()
-
-        total_result = []
-
-        # m[email] = name
-        for act_num, row in enumerate(accounts):
-            for email in row[1:]:
-                mapping[email].add(act_num)
-
-        def dfs(act_num, result):
-            if act_num in vistied:
-                return
-
-            vistied.add(act_num)
-            data = accounts[act_num]
-
-            for email in data[1:]:
-                result.add(email)
-
-                for act in mapping[email]:
-                    dfs(act, result)
-
-        for act_num, row in enumerate(accounts):
-            result = set()
-            dfs(act_num, result)
-
-            if result:
-                total_result.append([row[0]] + sorted(result))
-
-        return total_result
-
-    def rewrite(self, accounts):
-        """
-        :type accounts: List[List[str]]
-        :rtype: List[List[str]]
-        """
-        """
-        利用input data structure as map.
-        """
-        email_to_acnt_map = dict()
-
-        # build graph
-        for acntNo, data in enumerate(accounts):
-            for email in data[1:]:
-                if not email_to_acnt_map.get(email):
-                    email_to_acnt_map[email] = set()
-                email_to_acnt_map[email].add(acntNo)
-
-        def dfs(acnt, result):
-            if acnt in visited:
-                return
-
-            visited.add(acnt)
-
-            data = accounts[acnt]
-
-            for email in data[1:]:
-                result.add(email)
-
-                for next_acnt in email_to_acnt_map[email]:
-                    dfs(next_acnt, result)
-
-        visited = set()
-        final_result = []
-
-        for acntNo, data in enumerate(accounts):
-
-            result = set()
-            dfs(acntNo, result)
-
-            if result:
-                final_result.append([data[0]] + (sorted(result)))
-
-        return final_result
-
-    def rewrite2(self, accounts):
-        """
-        :type accounts: List[List[str]]
-        :rtype: List[List[str]]
-        """
-        """
-        利用input data structure as map.
+        1. 名字會重複 所以不能當unique key, 故我們以enumerate count作為unique
+        key
         """
         from collections import defaultdict as dd
-        edmap = dd(set)
 
-        [edmap[email].add(actNum) for actNum, l in enumerate(accounts)
-            for email in l[1:]]
-
-        def dfs(actNum, email):
-            result = []
-
-            actNums = edmap.pop(email, [])
-
-            if actNums:
-                result.append(email)
-
-            for ac in actNums:
-                if ac == actNum:
-                    continue
-
-                for e in accounts[ac][1:]:
-                    result.extend(dfs(ac, e))
-
-            return result
-
+        # email: account number
+        dmap = dd(list)
         result = []
 
-        for actNum, l in enumerate(accounts):
-            # 先為empty 方便之後做判斷.
-            lresult = []
+        for acct, value in enumerate(accounts):
+            for email in value[1:]:
+                dmap[email].append(acct)
 
-            for email in l[1:]:
-                lresult.extend(dfs(actNum, email))
 
-            if lresult:
-                result.append([l[0]] + sorted(lresult))
+        visited = set()
+        emailed = set()
+
+        def dfs(email):
+            """
+            :ret: emails
+            """
+            emails = [email]
+
+            for acnt in dmap[email]:
+                if acnt in visited:
+                    continue
+
+                visited.add(acnt)
+
+                for e in accounts[acnt][1:]:
+                    if e in emailed:
+                        continue
+                    emailed.add(e)
+                    emails.extend(dfs(e))
+
+            return emails
+
+
+        for accnt, val in enumerate(accounts):
+            if accnt in visited:
+                continue
+
+            visited.add(accnt)
+            result.append([val[0]])
+
+            for email in val[1:]:
+                if email in emailed:
+                    continue
+                emailed.add(email)
+                result[-1].extend(dfs(email))
+
+            result[-1][1:] = sorted(result[-1][1:])
 
         return result
 
@@ -207,6 +141,4 @@ def build():
 
 if __name__ == "__main__":
     s = Solution()
-    #  print(s.accountsMerge(build()))
-    print(s.rewrite(build()))
-    print(s.rewrite2(build()))
+    print(s.accountsMerge(build()))

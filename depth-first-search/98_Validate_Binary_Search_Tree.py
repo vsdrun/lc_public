@@ -5,8 +5,7 @@
 """
 https://leetcode.com/problems/validate-binary-search-tree/description/
 
-Given a binary tree, determine if it is a valid
-**binary search tree (BST).
+Given a binary tree, determine if it is a valid binary search tree (BST).
 
 Assume a BST is defined as follows:
 
@@ -65,7 +64,6 @@ class Solution(object):
 
         return judge(root, float("-inf"), float("inf"))
 
-
 def build():
     """
         5
@@ -85,5 +83,5 @@ def build():
 if __name__ == "__main__":
     s = Solution()
     result = s.isValidBST(build())
-
-    print(result)
+    print(s.isValidBST(build()))
+    print(s.rewrite(build()))

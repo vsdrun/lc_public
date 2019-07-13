@@ -45,8 +45,7 @@ class Solution(object):
         """
         :type root: TreeNode
         :rtype: int
-        DFS
-        左大還是右大 DFS return 最大
+        my best solution.
         """
         if not root:
             return 0
@@ -75,7 +74,7 @@ class Solution(object):
 
             gmax[0] = max(gmax[0], node.val + lval + rval)
 
-            return node.val + lval if node.val + lval > node.val + rval else \
+            return node.val + lval if lval > rval else \
                     node.val + rval
 
 
@@ -93,12 +92,14 @@ def build():
        15   7
     Output: 42
     """
-    #  _1 = TreeNode(2)
-    #  _2 = TreeNode(-1)
+    _3 = TreeNode(-3)
+    return _3
 
-    #  _1.left = _2
+    _2 = TreeNode(2)
+    _1 = TreeNode(-1)
+    _2.right = _1
+    return _2
 
-    #  return _1
     _1 = TreeNode(-10)
     _2 = TreeNode(9)
     _3 = TreeNode(20)

@@ -59,37 +59,6 @@ class Solution(object):
         dfs(root)
         return result
 
-    def rewrite(self, root):
-        """
-        :type root: TreeNode
-        :rtype: List[str]
-        """
-
-        result = []
-        stack = []
-
-        def dfs(node):
-            if not node:
-                return
-
-            stack.append(node)
-
-            if not node.left and not node.right:
-                result.append("->".join(str(s.val) for s in stack))
-                stack.pop()
-                return
-
-            if node.left:
-                dfs(node.left)
-
-            if node.right:
-                dfs(node.right)
-
-            stack.pop()
-
-        dfs(root)
-        return result
-
 
 def build():
     root = TreeNode(1)
@@ -102,5 +71,5 @@ def build():
 if __name__ == "__main__":
 
     s = Solution()
-    print(s.binaryTreePaths(build()))
-    print(s.rewrite(build()))
+    result = s.binaryTreePaths(build())
+    print(result)

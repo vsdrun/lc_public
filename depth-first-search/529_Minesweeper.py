@@ -15,14 +15,15 @@ class Solution(object):
         dfs
         1. if 1~8, show 1~8 and stop.
         2. if E, go all direction if state is E and change to B, if B has
-            mine, change to number and stop
+            mine, change to number and stop (注意: stop 很重要)
         3. if mine, change to X and stop
         """
-
+        # 直接命中
         if board[click[0]][click[1]] == 'M':
             board[click[0]][click[1]] = 'X'
             return board
 
+        # 8 directions
         checkd = ((1, 0), (-1, 0), (0, -1), (0, 1), (1, 1), (-1, -1), (1, -1),
                 (-1, 1))
 
@@ -45,6 +46,7 @@ class Solution(object):
                 return
 
             cnt = check(i, j)
+            # stops if cnt != 0
             if cnt != 0:
                 board[i][j] = str(cnt)
                 return

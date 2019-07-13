@@ -70,7 +70,7 @@ class Solution(object):
         """
         :type s: str
         :rtype: List[str]
-
+        my best and clear solution :-)
         BFS 起手勢變形~ 將 root 加入 list.
         """
         def check(s):

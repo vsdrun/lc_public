@@ -64,36 +64,6 @@ class Solution(object):
 
         return judge(root, float("-inf"), float("inf"))
 
-    def rewrite(self, root):
-        """
-        :type root: TreeNode
-        :rtype: bool
-        """
-        mmax = float("inf")
-        mmin = float("-inf")
-
-        if not root:
-            return True
-
-        def check(node, mx, mi):
-            """
-            left < node < right
-            """
-            if not mi < node.val < mx:
-                return False
-
-            if node.left:
-                if not check(node.left, node.val, mi):
-                    return False
-
-            if node.right:
-                if not check(node.right, mx, node.val):
-                    return False
-            return True
-
-        return check(root, mmax, mmin)
-
-
 def build():
     """
         5

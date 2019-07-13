@@ -26,6 +26,7 @@ Example 1:
 Input: [[1,3], [0,2], [1,3], [0,2]]
 Output: true
 
+
 Explanation:
 The graph looks like this:
 0----1
@@ -34,7 +35,6 @@ The graph looks like this:
 3----2
 
 We can divide the vertices into two groups: {0, 2} and {1, 3}.
-
 
 
 Example 2:
@@ -150,11 +150,51 @@ class Solution(object):
             for head, child in enumerate(graph)
             if head not in visited)
 
+    def rewrite3(self, graph):
+        """
+        :type graph: List[List[int]]
+        :rtype: bool
+        另一種策略 比較慢 但是仍有效
+        使用dict(hash dict)仍是比較有效的方式 而此我們使用set,
+        其實內部使用的implement應該也是hash map)
+        """
+        def check(child, flag):
+            if not flag:
+                for c in child:
+                    if c in setA:
+                        return False
+            else:
+                for c in child:
+                    if c in visited and c not in setA:
+                        return False
+                    setA.add(c)
+
+            for c in child:
+                if c not in visited:
+                    visited.add(c)
+
+                    if not check(graph[c], not flag):
+                        return False
+
+            return True
+
+        setA = set() # True flag nodes
+        visited = set()
+
+        for head, child in enumerate(graph):
+            if head not in visited:
+                visited.add(head)
+                setA.add(head)
+                if not check(child, False):
+                    return False
+
+        return True
+
 
 def build():
     return [[1, 3], [0, 2], [1, 3], [0, 2]]
-    return [[1, 3], [0, 2], [1, 3], [0, 2]]  # [0,2] 重複...
     return [[1, 2, 3], [0, 2], [0, 1, 3], [0, 2]]
+    return [[1, 3], [0, 2], [1, 3], [0, 2]]  # [0,2] 重複...
 
 
 if __name__ == "__main__":
@@ -162,3 +202,4 @@ if __name__ == "__main__":
     print(s.isBipartite(build()))
     print(s.rewrite(build()))
     print(s.rewrite2(build()))
+    print(s.rewrite3(build()))

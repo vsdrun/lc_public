@@ -40,52 +40,7 @@ class Solution(object):
         :rtype: TreeNode
 
         1. 先 preorder 找root
-        2. 由inorder中藉由root找到左tree, 右tree
-        """
-        if not preorder:
-            return None
-
-        root = TreeNode(preorder[0])
-        ridx = inorder.index(root.val)
-
-        left_in = inorder[:ridx]
-        right_in = inorder[ridx + 1:]
-
-        left_pre = preorder[1: 1 + len(left_in)]
-        right_pre = preorder[1 + len(left_in):]
-
-        root.left = self.buildTree(left_pre, left_in)
-        root.right = self.buildTree(right_pre, right_in)
-
-        return root
-
-        # -----fast?
-
-        def construct(preorder, inorder, i, j):
-            if i < j:
-                val = preorder.pop()
-                index = self.map[val]
-                root = TreeNode(val)
-                root.left = construct(preorder, inorder, i, index)
-                root.right = construct(preorder, inorder, index + 1, j)
-                return root
-
-        preorder.reverse()
-        self.map = {}
-
-        for i, val in enumerate(inorder):
-            self.map[val] = i
-
-        return construct(preorder, inorder, 0, len(inorder))
-
-    def rewrite(self, preorder, inorder):
-        """
-        :type preorder: List[int]
-        :type inorder: List[int]
-        :rtype: TreeNode
-
-        1. 先 preorder 找root
-        2. 由inorder中藉由root找到左tree, 右tree
+        2. 由 inorder 中藉由root找到左tree, 右tree
 
         preorder = [3,9,20,15,7]
         inorder = [9,3,15,20,7]
@@ -97,34 +52,38 @@ class Solution(object):
             /  \
            15   7
         """
-
         if not preorder or not inorder:
             return None
 
-        def build(preo, ino):
-            if not ino:
+        def create(nodes):
+            if not nodes:
                 return None
 
-            root = preo.pop()
-            left = ino[:ino.index(root)]
-            right = ino[ino.index(root)+1:]
+            root_val = p.pop()
+            root = TreeNode(root_val)
 
-            rootTN = TreeNode(root)
-            rootTN.left = build(preo, left)
-            rootTN.right = build(preo, right)
+            left = nodes[:nodes.index(root_val)]
+            right = nodes[nodes.index(root_val)+1:]
 
-            return rootTN
+            root.left = create(left)
+            root.right= create(right)
+            return root
 
-        preorder.reverse()
-        # get root
-        root = preorder.pop()
-        left = inorder[:inorder.index(root)]
-        right = inorder[inorder.index(root)+1:]
 
-        rootTN = TreeNode(root)
-        rootTN.left = build(preorder, left)
-        rootTN.right = build(preorder, right)
-        return rootTN
+        p = preorder
+        i = inorder
+
+        p.reverse() # reverse it thus we could pop data.
+        root_val = p.pop()
+        root = TreeNode(root_val)
+
+        left = i[: i.index(root_val)]
+        right = i[i.index(root_val)+1:]
+
+        root.left = create(left)
+        root.right= create(right)
+
+        return root
 
 
 def build():
@@ -142,22 +101,17 @@ def build():
 
 if __name__ == "__main__":
     s = Solution()
-    root_1 = s.buildTree(*build())
-    root_2 = s.rewrite(*build())
+    root = s.buildTree(*build())
 
-    def dfs(node, result):
+    def dfs(node):
         result.append(node.val)
 
         if node.left:
-            dfs(node.left, result)
+            dfs(node.left)
 
         if node.right:
-            dfs(node.right, result)
+            dfs(node.right)
 
     result = []
-    dfs(root_1, result)
-    print(result)
-
-    result = []
-    dfs(root_2, result)
+    dfs(root)
     print(result)

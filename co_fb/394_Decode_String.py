@@ -42,63 +42,39 @@ def decodeString(self, s):
 
 
 class Solution(object):
-    def decodeString_mycode(self, val):
-        """
-        :type s: str
-        :rtype: str
-        """
-        stack = []
-
-        # 初始化~
-        stack += ["", 1],
-        num = ""
-
-        for c in val:
-            if c.isdigit():
-                num += c
-            elif c == "[":
-                stack.append(["", int(num)])
-                num = ""
-            elif c == "]":
-                st, k = stack.pop()
-                stack[-1][0] += st * k
-            else:
-                stack[-1][0] = stack[-1][0] + c
-
-        return stack[0][0]
-
-    def decodeString(self, val):
+    def decodeString(self, s):
         """
         :type s: str
         :rtype: str
         return "22[abc]3[cd]ef"
+
+        "3[a2[c]]", return "accaccacc".
         """
+        cnt = ""
+        stack = [[1, ""]]
 
-        stack = []
-        stack.append(["", 1])
-        num = ""
-
-        for ch in val:
-            if ch.isdigit():
-                num += ch
-            elif ch == '[':
-                stack.append(["", int(num)])
-                num = ""
-            elif ch == ']':
-                st, k = stack.pop()
-                stack[-1][0] += st * k
+        for c in s:
+            if c.isdigit():
+                cnt += c
+            elif c == "[":
+                stack.append([int(cnt), ""])
+                cnt = ""
+            elif c == "]":
+                count, words = stack.pop()
+                result = words * count
+                stack[-1][1] += result
             else:
-                stack[-1][0] += ch
-        return stack[0][0]
+                stack[-1][1] += c
 
+        return stack[-1][1] * stack[-1][0]
 
 def build():
-    return "2[abc]3[cd]ef"
-    return "3[z]2[2[y]pq4[2[jk]e1[f]]]ef"
-    return "100[leetcode]"
-    return "xx"
-    return "xx3[ab2[cd]]ef3[a]ggg"
     return "3[a2[c]]"
+    return "xx"
+    return "100[leetcode]"
+    return "3[z]2[2[y]pq4[2[jk]e1[f]]]ef"
+    return "2[abc]3[cd]ef"
+    return "xx3[ab2[cd]]ef3[a]ggg"
 
 
 if __name__ == "__main__":
@@ -106,8 +82,4 @@ if __name__ == "__main__":
 
     s = Solution()
     result = s.decodeString(n)
-    print(result)
-    result = s.decodeString_mycode(n)
-    print(result)
-    result = s.rewrite(n)
     print(result)

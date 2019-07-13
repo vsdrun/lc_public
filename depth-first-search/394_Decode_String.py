@@ -42,118 +42,38 @@ def decodeString(self, s):
 
 
 class Solution(object):
-    def decodeString_mycode(self, val):
+    def decodeString(self, s):
         """
         :type s: str
         :rtype: str
+        return "22[abc]3[cd]ef"
+        "3[a2[c]]", return "accaccacc".
         """
-        stack = []
+        cnt = ""
+        stack = [[1, ""]]
 
-        # 初始化~
-        stack += ["", 1],
-        num = ""
-
-        for c in val:
+        for c in s:
             if c.isdigit():
-                num += c
+                cnt += c
             elif c == "[":
-                stack.append(["", int(num)])
-                num = ""
+                stack.append([int(cnt), ""])
+                cnt = ""
             elif c == "]":
-                st, k = stack.pop()
-                stack[-1][0] += st * k
+                count, words = stack.pop()
+                result = words * count
+                stack[-1][1] += result
             else:
-                stack[-1][0] = stack[-1][0] + c
+                stack[-1][1] += c
 
-        return stack[0][0]
-
-    def decodeString(self, val):
-        """
-        :type s: str
-        :rtype: str
-        """
-
-        stack = []
-        stack.append(["", 1])
-        num = ""
-
-        for ch in val:
-            if ch.isdigit():
-                num += ch
-            elif ch == '[':
-                stack.append(["", int(num)])
-                num = ""
-            elif ch == ']':
-                st, k = stack.pop()
-                stack[-1][0] += st * k
-            else:
-                stack[-1][0] += ch
-        return stack[0][0]
-
-    def rewrite(self, val):
-        """
-        :type s: str
-        :rtype: str
-        s = "3[a2[c]]", return "accaccacc".
-        """
-        stack = [[0, []]]  # number, result
-        val = list(val)
-
-        while val:
-            tmp_digit = ""
-            v = None
-
-            while True:
-                v = val.pop(0)
-                if not v.isdigit():
-                    break
-                tmp_digit += v
-
-            if tmp_digit:
-                stack.append([int(tmp_digit), []])
-            elif v == '[':
-                continue
-            elif v == ']':
-                num, result = stack.pop()
-                stack[-1][1].extend(num * result)
-            else:
-                stack[-1][1].append(v)
-
-        return "".join(stack[0][1])
-
-    def rewrite2(self, val):
-        """
-        :type s: str
-        :rtype: str
-        s = "3[a2[c]]", return "accaccacc".
-        優美... please...
-        """
-        stack = [['1', '']]
-        num = ''
-        content = ''
-
-        for c in val:
-            if c.isdigit():
-                num += c
-            elif c == '[':
-                stack.append([int(num), ''])
-                num = ''
-            elif c == ']':
-                cnt, content = stack.pop()
-                stack[-1][1] = stack[-1][1] + cnt * content
-            else:
-                stack[-1][1] = stack[-1][1] + c
-
-        return stack[0][1]
-
+        return stack[-1][1] * stack[-1][0]
 
 def build():
-    return "2[abc]3[cd]ef"
+    return "3[a2[c]]"
+    return "xx"
     return "100[leetcode]"
     return "3[z]2[2[y]pq4[2[jk]e1[f]]]ef"
-    return "xx"
+    return "2[abc]3[cd]ef"
     return "xx3[ab2[cd]]ef3[a]ggg"
-    return "3[a2[c]]"
 
 
 if __name__ == "__main__":
@@ -161,10 +81,4 @@ if __name__ == "__main__":
 
     s = Solution()
     result = s.decodeString(n)
-    print(result)
-    result = s.decodeString_mycode(n)
-    print(result)
-    result = s.rewrite(n)
-    print(result)
-    result = s.rewrite2(n)
     print(result)

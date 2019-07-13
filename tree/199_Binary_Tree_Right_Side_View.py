@@ -83,5 +83,6 @@ def pt(node):
 
 if __name__ == "__main__":
     s = Solution()
-    se = s.rightSideView(build())
-    print(se)
+    print(s.rightSideView(build()))
+    print(s.rewrite(build()))
+

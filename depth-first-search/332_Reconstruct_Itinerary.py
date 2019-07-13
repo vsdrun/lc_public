@@ -47,7 +47,7 @@ http://www.geeksforgeeks.org/hierholzers-algorithm-directed-graph/
 http://www.geeksforgeeks.org/eulerian-path-and-circuit/
 https://discuss.leetcode.com/topic/36370/short-ruby-python-java-c
 
-Eulerian Cycle
+Eulerian Cycle( all about EDGE!!! )
 An undirected graph has Eulerian cycle if following two conditions are true.
 ….a) All vertices with non-zero degree are connected.
 We don’t care about vertices with zero degree because they don’t belong
@@ -103,37 +103,9 @@ class Solution(object):
         """
         :type tickets: List[List[str]]
         :rtype: List[str]
-        """
-        import collections
-
-        # while building the graph, consider using dict.
-        targets = collections.defaultdict(list)
-
-        # Build graph
-        # Sort tickets base on first element, then second element.
-        # We follow the ticket with lexical order, thus we do [::-1]
-        # since we pop() from list. (which is the right most pop first)
-        for a, b in sorted(tickets)[::-1]:
-            targets[a] += b,
-
-        # Only single route as circuit list.
-        # We don't use path list here.
-        route = []
-
-        # DFS
-        def visit(airport):
-            while targets[airport]:
-                visit(targets[airport].pop())
-
-            route.append(airport)
-
-        visit('JFK')
-        return route[::-1]
-
-    def rewrite(self, tickets):
-        """
-        :type tickets: List[List[str]]
-        :rtype: List[str]
+        概念:
+        訪問vertex時代表其even edge of degree已經被訪問.
+        - Vertex -
         """
         from collections import defaultdict as dd
 
@@ -153,29 +125,6 @@ class Solution(object):
         dfs('JFK')
         return result[::-1]
 
-    def rewrite2(self, tickets):
-        """
-        :type tickets: List[List[str]]
-        :rtype: List[str]
-        """
-        from collections import defaultdict as dd
-
-        dmap = dd(list)
-        for a in sorted(tickets, key=lambda t: t[1])[::-1]:
-            dmap[a[0]].append(a[1])
-        print("dmap: {}".format(dmap))
-        stack = []
-
-        def travel(ap):
-            while dmap[ap]:
-                travel(dmap[ap].pop())
-
-            stack.append(ap)
-
-        travel('JFK')
-        print("stack: {}".format(stack))
-
-        return stack[::-1]
 
 def build():
     # ['JFK', 'ATL', 'JFK', 'SFO', 'ATL', 'SFO']

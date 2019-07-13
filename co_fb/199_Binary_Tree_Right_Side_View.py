@@ -52,23 +52,6 @@ class Solution(object):
 
         return result
 
-    def rewrite(self, root):
-        """
-        :type root: TreeNode
-        :rtype: List[int]
-        """
-        if not root:
-            return []
-
-        r = [root]
-        result = []
-
-        while r:
-            result.append(r[-1].val)
-
-            r = [node for value in r for node in (value.left, value.right) if node]
-
-        return result
 
 def build():
     """

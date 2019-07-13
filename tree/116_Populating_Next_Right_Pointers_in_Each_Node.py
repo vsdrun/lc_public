@@ -79,6 +79,9 @@ class Solution:
                 root = rnode.next
 
     def rewrite(self, root):
+        """
+        BFS concept
+        """
         if not root:
             return
 

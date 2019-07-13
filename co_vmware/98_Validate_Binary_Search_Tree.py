@@ -64,7 +64,6 @@ class Solution(object):
 
         return judge(root, float("-inf"), float("inf"))
 
-
 def build():
     """
         5
@@ -84,5 +83,5 @@ def build():
 if __name__ == "__main__":
     s = Solution()
     result = s.isValidBST(build())
-
-    print(result)
+    print(s.isValidBST(build()))
+    print(s.rewrite(build()))

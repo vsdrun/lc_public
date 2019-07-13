@@ -81,6 +81,40 @@ class Solution(object):
 
         return getRoot(head)
 
+    def rewrite(self, head):
+        """
+        :type head: ListNode
+        :rtype: TreeNode
+        提中 recursive, 更快的方法為將 sigle linked list 轉為 array
+        cache affinity, 快! 且為一個sorted array, 很快!
+        """
+        def start(node):
+            if not node:
+                return None
+            # -10, -3
+            onode = node
+
+            fwdNode = node.next.next if node.next else None
+            prev = None
+
+
+            while fwdNode is not None and node is not None:
+                fwdNode = fwdNode.next.next if fwdNode.next else None
+                prev = node
+                node = node.next
+
+            if prev:
+                prev.next = None
+
+            root = TreeNode(node.val)
+
+            root.left = start(onode if onode != node else None)
+            root.right= start(node.next)
+
+            return root
+
+        return start(head)
+
 
 def build():
     n1 = ListNode(-10)
@@ -114,7 +148,13 @@ def pt(node):
     return result
 
 if __name__ == "__main__":
-    print(pl(build()))
+    print("input: {}".format(pl(build())))
+    print("---")
 
     s = Solution()
     print(pt(s.sortedListToBST(build())))
+
+    print("---")
+
+    s = Solution()
+    print(pt(s.rewrite(build())))

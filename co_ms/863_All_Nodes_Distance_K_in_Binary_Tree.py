@@ -52,6 +52,7 @@ class Solution(object):
 
         conn = collections.defaultdict(list)
 
+        # 建構雙向map
         def connect(parent, child):
             if parent and child:
                 conn[parent.val].append(child.val)
@@ -59,46 +60,18 @@ class Solution(object):
             if child.left: connect(child, child.left)
             if child.right: connect(child, child.right)
 
+        # 開始建構
         connect(None, root)
+
         bfs = [target.val]
         seen = set(bfs)
 
+        # 有多少distance跑多少次
         for i in xrange(K):
             bfs = [y for x in bfs for y in conn[x] if y not in seen]
             seen |= set(bfs)
 
         return bfs
-
-    def rewrite(self, root, target, K):
-        """
-        :type root: TreeNode
-        :type target: TreeNode
-        :type K: int
-        :rtype: List[int]
-        """
-        from collections import defaultdict as dd
-        dmap = dd(list)
-
-        def build(parent, current):
-            if parent:
-                dmap[current.val].append(parent.val)
-
-            for c in (current.left, current.right):
-                if c:
-                    dmap[current.val].append(c.val)
-                    build(current, c)
-
-        build(None, root)
-        bfs = [target.val]
-        seen = set(bfs)
-
-        # SMART!
-        for i in xrange(K):
-            bfs = [y for x in bfs for y in dmap[x] if y not in seen]
-            seen |= set(bfs)
-
-        return bfs
-
 
 
 def build():

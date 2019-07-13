@@ -45,7 +45,8 @@ Input:
 Output: 1
 Explanation:
 The 0th and 1st students are direct friends, the 1st and 2nd students are direct friends,
-so the 0th and 2nd students are indirect friends. All of them are in the same friend circle, so return 1.
+so the 0th and 2nd students are indirect friends.
+All of them are in the same friend circle, so return 1.
 """
 
 class Solution(object):
@@ -73,32 +74,6 @@ class Solution(object):
 
         return cnt
 
-    def rewrite(self, M):
-        """
-        :type M: List[List[int]]
-        :rtype: int
-        """
-        def dfs(node):
-            if node in visited:
-                return
-
-            visited.add(node)
-
-            for i in range(len(M[node])):
-                if i != node and M[node][i] == 1:
-                    dfs(i)
-
-
-        cnt = 0
-        visited = set()
-
-        for i in range(len(M)):
-            if i not in visited:
-                dfs(i)
-                cnt += 1
-
-        return cnt
-
 def build():
     return [[1,1,0],
             [1,1,0],
@@ -112,4 +87,3 @@ def build():
 if __name__ == "__main__":
     s = Solution()
     print(s.findCircleNum(build()))
-    print(s.rewrite(build()))

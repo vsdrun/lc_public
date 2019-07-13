@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+
 """
 https://leetcode.com/problems/reconstruct-itinerary/description/
 
@@ -46,7 +47,7 @@ http://www.geeksforgeeks.org/hierholzers-algorithm-directed-graph/
 http://www.geeksforgeeks.org/eulerian-path-and-circuit/
 https://discuss.leetcode.com/topic/36370/short-ruby-python-java-c
 
-Eulerian Cycle
+Eulerian Cycle( all about EDGE!!! )
 An undirected graph has Eulerian cycle if following two conditions are true.
 ….a) All vertices with non-zero degree are connected.
 We don’t care about vertices with zero degree because they don’t belong
@@ -102,37 +103,9 @@ class Solution(object):
         """
         :type tickets: List[List[str]]
         :rtype: List[str]
-        """
-        import collections
-
-        # while building the graph, consider using dict.
-        targets = collections.defaultdict(list)
-
-        # Build graph
-        # Sort tickets base on first element, then second element.
-        # We follow the ticket with lexical order, thus we do [::-1]
-        # since we pop() from list. (which is the right most pop first)
-        for a, b in sorted(tickets)[::-1]:
-            targets[a] += b,
-
-        # Only single route as circuit list.
-        # We don't use path list here.
-        route = []
-
-        # DFS
-        def visit(airport):
-            while targets[airport]:
-                visit(targets[airport].pop())
-
-            route.append(airport)
-
-        visit('JFK')
-        return route[::-1]
-
-    def rewrite(self, tickets):
-        """
-        :type tickets: List[List[str]]
-        :rtype: List[str]
+        概念:
+        訪問vertex時代表其even edge of degree已經被訪問.
+        - Vertex -
         """
         from collections import defaultdict as dd
 
@@ -154,6 +127,7 @@ class Solution(object):
 
 
 def build():
+    # ['JFK', 'ATL', 'JFK', 'SFO', 'ATL', 'SFO']
     return [["JFK", "SFO"], ["JFK", "ATL"], ["SFO", "ATL"],
             ["ATL", "JFK"], ["ATL", "SFO"]]
 
@@ -162,10 +136,8 @@ def build():
 
 if __name__ == "__main__":
     s = Solution()
-    result = s.findItinerary(build())
+    print(s.findItinerary(build()))
     # ["JFK", "MUC", "LHR", "SFO", "SJC"]
-    print(result)
 
-    result = s.rewrite(build())
+    print(s.rewrite2(build()))
     # ["JFK", "MUC", "LHR", "SFO", "SJC"]
-    print(result)

@@ -40,21 +40,28 @@ class Solution(object):
         :type grid: List[List[str]]
         :rtype: int
         """
-        def sink(i, j):
-            if 0 <= i < len(grid) and 0 <= j < len(grid[i]) and \
-                    grid[i][j] == '1':
+        direction = ((0, 1), (0, -1), (1, 0), (-1, 0))
 
-                grid[i][j] = '0'
+        def dfs(i, j):
+            if not 0 <= i < len(grid) \
+               or not 0 <= j < len(grid[0]) \
+               or grid[i][j] == '0':
+                return
 
-                # 由一個1進入，將連接的都sink為0
-                map(sink, (i + 1, i - 1, i, i), (j, j, j + 1, j - 1))
+            grid[i][j] = '0'
 
-                return 1
+            for d in direction:
+                dfs(i + d[0], j + d[1])
 
-            return 0
+        cnt = 0
 
-        return sum(sink(i, j) for i in range(len(grid)) for j in
-                   range(len(grid[i])))
+        for i in range(len(grid)):
+            for j in range(len(grid[0])):
+                if grid[i][j] != '0':
+                    dfs(i, j)
+                    cnt += 1
+
+        return cnt
 
     def numIslands_8dir(self, grid):
         """
@@ -78,53 +85,21 @@ class Solution(object):
         return sum(sink(i, j) for i in range(len(grid)) for j in
                    range(len(grid[i])))
 
-    def rewrite(self, grid):
-        """
-        :type grid: List[List[str]]
-        :rtype: int
-        """
-
-        if not grid:
-            return 0
-
-        cnt = 0
-        m = len(grid)
-        n = len(grid[0])
-        direction = ((0, 1), (0, -1), (1, 0), (-1, 0))
-
-        def dfs(x, y):
-            if x < 0 or x >= m or y < 0 or y >= n or grid[x][y] == '0':
-                return
-
-            grid[x][y] = '0'
-
-            for d in direction:
-                dfs(x + d[0], y + d[1])
-
-        for x in range(m):
-            for y in range(n):
-                if grid[x][y] == '1':
-                    cnt += 1
-                    dfs(x, y)
-
-        return cnt
-
 
 def build():
-    result = [['1', '1', '1', '1', '0'],
+    return [['1', '1', '0', '0', '0'],
+              ['1', '1', '0', '0', '0'],
+              ['0', '0', '1', '0', '0'],
+              ['0', '0', '0', '1', '1']]
+
+    return [['1', '1', '1', '1', '0'],
               ['1', '1', '0', '1', '0'],
               ['1', '1', '0', '0', '0'],
               ['0', '0', '0', '0', '0']]
 
-    result = [['1', '1', '0', '0', '0'],
-              ['1', '1', '0', '0', '0'],
-              ['0', '0', '1', '0', '0'],
-              ['0', '0', '0', '1', '1']]
-    return result
 
 
 if __name__ == "__main__":
     s = Solution()
     print(s.numIslands(build()))
-    #  print(s.numIslands_8dir(build()))
-    print(s.rewrite(build()))
+    print(s.numIslands_8dir(build()))

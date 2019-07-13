@@ -47,7 +47,7 @@ http://www.geeksforgeeks.org/hierholzers-algorithm-directed-graph/
 http://www.geeksforgeeks.org/eulerian-path-and-circuit/
 https://discuss.leetcode.com/topic/36370/short-ruby-python-java-c
 
-Eulerian Cycle
+Eulerian Cycle( all about EDGE!!! )
 An undirected graph has Eulerian cycle if following two conditions are true.
 ….a) All vertices with non-zero degree are connected.
 We don’t care about vertices with zero degree because they don’t belong
@@ -103,37 +103,9 @@ class Solution(object):
         """
         :type tickets: List[List[str]]
         :rtype: List[str]
-        """
-        import collections
-
-        # while building the graph, consider using dict.
-        targets = collections.defaultdict(list)
-
-        # Build graph
-        # Sort tickets base on first element, then second element.
-        # We follow the ticket with lexical order, thus we do [::-1]
-        # since we pop() from list. (which is the right most pop first)
-        for a, b in sorted(tickets)[::-1]:
-            targets[a] += b,
-
-        # Only single route as circuit list.
-        # We don't use path list here.
-        route = []
-
-        # DFS
-        def visit(airport):
-            while targets[airport]:
-                visit(targets[airport].pop())
-
-            route.append(airport)
-
-        visit('JFK')
-        return route[::-1]
-
-    def rewrite(self, tickets):
-        """
-        :type tickets: List[List[str]]
-        :rtype: List[str]
+        概念:
+        訪問vertex時代表其even edge of degree已經被訪問.
+        - Vertex -
         """
         from collections import defaultdict as dd
 
@@ -153,53 +125,19 @@ class Solution(object):
         dfs('JFK')
         return result[::-1]
 
-    def rewrite2(self, tickets):
-        """
-        :type tickets: List[List[str]]
-        :rtype: List[str]
-        """
-        # 1. 最小的char先走
-        # 2. build graph
-        from collections import defaultdict as dd
-
-        start = "JFK"
-
-        dmap = dd(list)
-        [dmap[t[0]].append(t[1]) for t in sorted(tickets, reverse=True)]
-        result = []
-
-        def dfs(node):
-            """
-            1. pop last node and dfs that node
-            2. if node isn't in dmap, result.appemd it and return
-            3. if node is in dmap, pop the result, if the result if dmap[node]
-                is zero , remove node from dmap, thus go back to 2.
-            """
-            while dmap[node]:
-                next_node = dmap[node].pop()
-                dfs(next_node)
-            result.append(node)
-
-        dfs(start)
-        return result[::-1]
-
 
 def build():
-    return [["MUC", "LHR"], ["JFK", "MUC"], ["SFO", "SJC"], ["LHR", "SFO"]]
+    # ['JFK', 'ATL', 'JFK', 'SFO', 'ATL', 'SFO']
     return [["JFK", "SFO"], ["JFK", "ATL"], ["SFO", "ATL"],
             ["ATL", "JFK"], ["ATL", "SFO"]]
+
+    return [["MUC", "LHR"], ["JFK", "MUC"], ["SFO", "SJC"], ["LHR", "SFO"]]
 
 
 if __name__ == "__main__":
     s = Solution()
-    result = s.findItinerary(build())
+    print(s.findItinerary(build()))
     # ["JFK", "MUC", "LHR", "SFO", "SJC"]
-    print(result)
 
-    result = s.rewrite(build())
+    print(s.rewrite2(build()))
     # ["JFK", "MUC", "LHR", "SFO", "SJC"]
-    print(result)
-
-    result = s.rewrite2(build())
-    # ["JFK", "MUC", "LHR", "SFO", "SJC"]
-    print(result)
