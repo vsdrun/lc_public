@@ -75,7 +75,7 @@ class Codec:
         if not data:
             return
 
-        # 5 2 7
+        # inverse, because we are using list.pop()
         data = map(int, data.split()[::-1])
 
         def dfs(left, right):

@@ -33,9 +33,9 @@ class Solution(object):
         if not root:
             return None
         if p.val < root.val:
-            return self.rewrite(root.left, p) or root
+            return self.inorderSuccessor(root.left, p) or root
         else:  # >=
-            return self.rewrite(root.right, p)
+            return self.inorderSuccessor(root.right, p)
 
 
 def build():

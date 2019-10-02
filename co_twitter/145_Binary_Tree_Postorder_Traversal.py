@@ -41,9 +41,6 @@ class Solution(object):
         def dfs(node):
             if not node:
                 return
-            if not node.left and not node.right:
-                result.append(node.val)
-                return
 
             if node.left:
                 dfs(node.left)
@@ -55,6 +52,28 @@ class Solution(object):
         dfs(root)
 
         return result
+
+    def rewrite(self, root):
+        """
+        :type root: TreeNode
+        :rtype: List[int]
+        """
+
+        def post(node):
+            if not node:
+                return
+
+            if node.left:
+                for n in post(node.left):
+                    yield n
+            if node.right:
+                for n in post(node.right):
+                    yield n
+
+            yield node.val
+
+
+        return [v for v in post(root)]
 
 
 def build():
@@ -76,3 +95,4 @@ def build():
 if __name__ == "__main__":
     s = Solution()
     print(s.postorderTraversal(build()))
+    print(s.rewrite(build()))

@@ -83,12 +83,42 @@ class Solution(object):
 
         return result
 
+    def rewrite3(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: List[int]
+        """
+
+        import heapq as hq
+        from collections import defaultdict as dd
+
+        dmap = dd(int)
+        result = []
+
+        for n in nums:
+            dmap[n] += 1
+            hq.heappush(result, (-dmap[n], n))
+
+        kset = set()
+        kresult = []
+
+        while k > 0:
+            _, val = hq.heappop(result)
+            if val in kset:
+                continue
+
+            kset.add(val)
+            kresult.append(val)
+            k -= 1
+
+        return kresult
 
 
 def build():
-    return [5,3,1,1,1,3,73,1], 2
-    return [1], 1
     return [1,1,1,2,2,3], 2
+    return [1], 1
+    return [5,3,1,1,1,3,73,1], 2
 
 
 if __name__ == "__main__":
@@ -96,3 +126,4 @@ if __name__ == "__main__":
     print(s.topKFrequent(*build()))
     print(s.rewrite(*build()))
     print(s.rewrite2(*build()))
+    print(s.rewrite3(*build()))

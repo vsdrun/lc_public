@@ -44,6 +44,8 @@ class Solution(object):
         :rtype: List[List[int]]
         或者用 sorted, 然後回傳K個
         """
+
+        # heapq minium heap by default
         import heapq as hq
 
         stack = []

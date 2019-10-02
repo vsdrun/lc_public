@@ -15,22 +15,21 @@ Given "pwwkew", the answer is "wke", with the length of 3.
 
 Note that the answer must be a substring,
 "pwke" is a subsequence and not a substring.
-
-
-這種題目明顯用 2 pointers
-
 """
-
 
 class Solution(object):
     def lengthOfLongestSubstring(self, s):
         """
         :type s: str
         :rtype: int
+        hash + 2 pointers, left, right
         """
+        if not s or len(s) == 0:
+            return 0
+
         import collections as cc
 
-        htable = cc.defaultdict(list)
+        htable = cc.defaultdict(int)
         left, right = 0, 0
 
         mx = float("-inf")
@@ -38,28 +37,27 @@ class Solution(object):
         while right < len(s):
             if s[right] in htable:
                 #  left 只往右走 不會回頭 故:
-                left = max(left, htable[s[right]][-1] + 1)
+                left = max(left, htable[s[right]] + 1)
 
-            htable[s[right]].append(right)
+            htable[s[right]] = right
 
             mx = max(mx, right - left + 1)
 
             right += 1
 
-        print(htable)
-
         return mx
 
 
 def build():
-    return "abba"
     return "pwwke"
-    return "c"
     return "dvdf"
+    return "abba"
+    return ""
+    return "abcabcbb"
     return "cc"
+    return "c"
 
 
 if __name__ == "__main__":
     s = Solution()
-    result = s.lengthOfLongestSubstring(build())
-    print(result)
+    print(s.lengthOfLongestSubstring(build()))

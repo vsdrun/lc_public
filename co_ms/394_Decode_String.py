@@ -47,9 +47,11 @@ class Solution(object):
         :type s: str
         :rtype: str
         return "22[abc]3[cd]ef"
+
         "3[a2[c]]", return "accaccacc".
         """
         cnt = ""
+        # as place holder.
         stack = [[1, ""]]
 
         for c in s:

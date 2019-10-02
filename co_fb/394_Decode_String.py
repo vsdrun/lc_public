@@ -51,6 +51,7 @@ class Solution(object):
         "3[a2[c]]", return "accaccacc".
         """
         cnt = ""
+        # as place holder.
         stack = [[1, ""]]
 
         for c in s:

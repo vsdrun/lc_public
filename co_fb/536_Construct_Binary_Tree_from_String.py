@@ -44,6 +44,12 @@ class Solution(object):
         """
         :type s: str
         :rtype: TreeNode
+
+        Input: "4(2(3)(1))(6(5))"
+        區分states:
+        1. number only
+        2. (
+        3. ) before it could have number or no number.
         """
         if not s:
             return
@@ -55,11 +61,15 @@ class Solution(object):
         # "4(2(3)(1))(6(5))"
         while idx < len(s):
             if s[idx] == '(':
+                # test if there's a number before this bracket.
+                # if there is, create the node and put into p_stack
+                # for next number's parent.
                 if tmp_num:
                     root = TreeNode(int(tmp_num))
                     tmp_num = ""
                     p_stack += root,
             elif s[idx] == ')':
+                # if number exist, it the child of previous parent.
                 if tmp_num:
                     child = TreeNode(int(tmp_num))
                     tmp_num = ""
@@ -68,6 +78,7 @@ class Solution(object):
                         root.left = child
                     elif not root.right:
                         root.right = child
+                # test case for the last ')' in: 4(3(1)(2))
                 else:
                     child = p_stack.pop()
                     root = p_stack[-1]
@@ -76,8 +87,10 @@ class Solution(object):
                     elif not root.right:
                         root.right = child
             else:
+                # accumulate number in string.
                 tmp_num += s[idx]
 
+            # moving index
             idx += 1
 
         if tmp_num:
@@ -88,6 +101,8 @@ class Solution(object):
 
 
 def build():
+    return "4(3(1)(2))()"
+    return "4(()(4)()"
     return "4(2(3)(1))(6(5))"
     return "51(232)(434)"
     return "4"

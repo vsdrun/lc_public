@@ -59,6 +59,7 @@ class Solution(object):
 
                 last = len(stack) - stack[::-1].index("(") - 1
                 sub = stack[last + 1:]
+                print("sub: {}".format(sub))
                 result = reduce(cal, sub)
                 stack = stack[:last]
                 stack += result,
@@ -82,8 +83,8 @@ class Solution(object):
 
 
 def build():
-    return "1-11"
     return "13+(22-23) + 3"
+    return "1-11"
     return "1 + 1"
     return " 2-1 + 2 "
     return "(1+(4+5+2)-3)+(6+8)"

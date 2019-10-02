@@ -43,6 +43,7 @@ class Solution(object):
         import bisect as bi
 
         total = 0
+
         # 做 BST 故設定boundary.
         presum = [(0, 0), (float('inf'), 0)]
         mx = 0

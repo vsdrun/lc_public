@@ -69,6 +69,7 @@ class Solution(object):
         # 有多少distance跑多少次
         for i in xrange(K):
             bfs = [y for x in bfs for y in conn[x] if y not in seen]
+            # https://docs.python.org/3/library/stdtypes.html#set-types-set-frozenset
             seen |= set(bfs)
 
         return bfs

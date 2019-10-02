@@ -5,7 +5,6 @@
 """
 https://leetcode.com/problems/serialize-and-deserialize-bst/description/
 
-
 Serialization is the process of converting a data structure or object into a
 sequence of bits so that it can be stored in a file or memory buffer,
 or transmitted across a network connection link to be reconstructed later
@@ -38,69 +37,60 @@ class TreeNode(object):
 
 
 class Codec:
-
     def serialize(self, root):
         """Encodes a tree to a single string.
 
         :type root: TreeNode
         :rtype: str
         請用297解決 謝謝.
+        或者, preorder serialize without '#'
         """
-        # let's encode with preorder.
         result = []
 
-        def encode(node):
+        def dfs(node):
             if not node:
                 return
 
-            result.append(str(node.val) + ' ')
-            encode(node.left)
-            encode(node.right)
+            result.append(str(node.val))
+            if node.left:
+                dfs(node.left)
+            if node.right:
+                dfs(node.right)
 
-        encode(root)
-        return "".join(result)
+        dfs(root)
+        return " ".join(result)
 
     def deserialize(self, data):
         """Decodes your encoded data to tree.
 
         :type data: str, preordered.
         :rtype: TreeNode
+             5
+            / \
+           2   6
+          / \
+         1   3
+        [5,2,1,3,6]
         """
         if not data:
             return
 
-        # sorted str
-        inorder = sorted(int(c) for c in data.split())
-        preorder = [int(c) for c in data.split()]  # 找 root
+        # inverse, because we are using list.pop()
+        data = map(int, data.split()[::-1])
 
-        def build(root, inorder):
-            """
-            Create root node and return root node.
-            """
-            rtn = TreeNode(root)
+        def dfs(left, right):
+            tval = data.pop()
+            tnode = TreeNode(tval)
 
-            left_inorder = inorder[: inorder.index(root)]
-            left_tree = right_tree = None
+            if data and left < data[-1] < tval:
+                tnode.left = dfs(left, tval)
 
-            if left_inorder:
-                next_root = preorder.pop(0)
-                left_tree = build(next_root, left_inorder)
+            if data and right > data[-1] > tval:
+                tnode.right = dfs(tval, right)
 
-            right_inorder = inorder[inorder.index(root) + 1:]
+            return tnode
 
-            if right_inorder:
-                next_root = preorder.pop(0)
-                right_tree = build(next_root, right_inorder)
-
-            rtn.left = left_tree
-            rtn.right = right_tree
-            return rtn
-
-        root = preorder.pop(0)
-        rtn = build(root, inorder)
-
-        return rtn
-
+        return dfs(float("-inf"), float("inf"))
 
 def build():
     """
@@ -108,10 +98,29 @@ def build():
      / \
     2   7
     """
-    root = TreeNode(5)
-    root.left = TreeNode(2)
-    root.right = TreeNode(7)
-    return root
+    #  root = TreeNode(5)
+    #  root.left = TreeNode(2)
+    #  root.right = TreeNode(7)
+    #  return root
+
+    """
+             5
+            / \
+           2   6
+          / \
+         1   3
+        [5,2,1,3,6]
+    """
+    _5 = TreeNode(5)
+    _2 = TreeNode(2)
+    _6 = TreeNode(6)
+    _1 = TreeNode(1)
+    _3 = TreeNode(3)
+    _5.left = _2
+    _5.right = _6
+    _2.left = _1
+    _2.right = _3
+    return _5
 
 
 def pt(node):
@@ -126,6 +135,6 @@ def pt(node):
 if __name__ == "__main__":
     s = Codec()
     se = s.serialize(build())
-    print(se)
+    print("serialized: {}".format(se))
     de = s.deserialize(se)
     pt(de)

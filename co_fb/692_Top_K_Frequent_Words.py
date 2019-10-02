@@ -59,6 +59,16 @@ class Solution(object):
 
         return ret
 
+    def rewrite(self, words, k):
+        """
+        :type words: List[str]
+        :type k: int
+        :rtype: List[str]
+        """
+        from collections import Counter as cc
+
+        result = cc(words)
+
 
 
 def build():

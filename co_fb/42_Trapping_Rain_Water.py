@@ -40,8 +40,8 @@ class Solution(object):
         """
         l = 0
         r = len(height) - 1
-        level = 0  # 前次
-        lower = 0  # 此次
+        level = 0
+        lower = 0
         water = 0
 
         while l < r:
@@ -68,7 +68,7 @@ class Solution(object):
         lidx = 0
         ridx = len(height) - 1
 
-        current_level = 0  # moving idx 會比 local max 小...
+        current_level = 0
         maximum_local_level = 0
         water_captured = 0
 

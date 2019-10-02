@@ -24,9 +24,12 @@ class Solution(object):
         :rtype: int
         hash + 2 pointers, left, right
         """
+        if not s or len(s) == 0:
+            return 0
+
         import collections as cc
 
-        htable = cc.defaultdict(list)
+        htable = cc.defaultdict(int)
         left, right = 0, 0
 
         mx = float("-inf")
@@ -34,9 +37,9 @@ class Solution(object):
         while right < len(s):
             if s[right] in htable:
                 #  left 只往右走 不會回頭 故:
-                left = max(left, htable[s[right]][-1] + 1)
+                left = max(left, htable[s[right]] + 1)
 
-            htable[s[right]].append(right)
+            htable[s[right]] = right
 
             mx = max(mx, right - left + 1)
 
@@ -46,16 +49,15 @@ class Solution(object):
 
 
 def build():
-    return "abcabcbb"
-    return ""
-    return "abba"
-    return "cc"
-    return "dvdf"
     return "pwwke"
+    return "dvdf"
+    return "abba"
+    return ""
+    return "abcabcbb"
+    return "cc"
     return "c"
 
 
 if __name__ == "__main__":
     s = Solution()
     print(s.lengthOfLongestSubstring(build()))
-    print(s.rewrite(build()))

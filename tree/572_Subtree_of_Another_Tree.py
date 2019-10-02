@@ -66,6 +66,8 @@ class Solution(object):
         make it better:
         t only belongs to s while s's some node has the depth as t's
         only compare s's some node to t.
+
+        or 編碼... 比對編碼 with string comparason.
         """
         bfs_list = [s]
 
